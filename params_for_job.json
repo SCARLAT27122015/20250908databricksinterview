@@ -1,0 +1,27 @@
+resources:
+  jobs:
+    Dynamic_params_Job:
+      name: Dynamic params Job
+      tasks:
+        - task_key: fileLookup
+          sql_task:
+            file:
+              path: /Workspace/Users/israelawstest20220727@gmail.com/dbinterview/fileLookup.sql
+              source: WORKSPACE
+            warehouse_id: 832a428346bcb505
+        - task_key: filenamesArray
+          depends_on:
+            - task_key: fileLookup
+          for_each_task:
+            inputs: "{{tasks.fileLookup.output.rows}}"
+            task:
+              task_key: Ingestion
+              notebook_task:
+                notebook_path: /Workspace/Users/israelawstest20220727@gmail.com/dbinterview/02-Dynamic
+                  ingestion
+                base_parameters:
+                  file: "{{input.file}}"
+                source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
