@@ -1,0 +1,63 @@
+{
+  "name": "JobWithParams20250913",
+  "email_notifications": {
+    "no_alert_for_skipped_runs": false
+  },
+  "webhook_notifications": {},
+  "timeout_seconds": 0,
+  "max_concurrent_runs": 1,
+  "tasks": [
+    {
+      "task_key": "Task-A",
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Intermediate/Intermediate-Notebook-A",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Task-B",
+      "depends_on": [
+        {
+          "task_key": "Task-A"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Intermediate/Intermediate-Notebook-B",
+        "base_parameters": {
+          "records_processed": "{{tasks.`Task-A`.values.total_records}}"
+        },
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "Task-C",
+      "depends_on": [
+        {
+          "task_key": "Task-A"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Workspace/Users/israelawstest20220727@gmail.com/Databricks lakeflow/Intermediate/Intermediate-Notebook-C",
+        "source": "WORKSPACE"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {}
+    }
+  ],
+  "queue": {
+    "enabled": true
+  },
+  "performance_target": "PERFORMANCE_OPTIMIZED",
+  "run_as": {
+    "user_name": "israelawstest20220727@gmail.com"
+  }
+}
